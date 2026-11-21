@@ -142,6 +142,7 @@ export function renderCartContents(): HTMLElement {
         decreaseButton.setAttribute('aria-label', 'Уменьшить');
 
         decreaseButton.addEventListener('click', () => {
+          if (quantity <= 1) return;
           updateCartQuantity(productId, quantity - 1);
           renderQty();
           renderFooter();
