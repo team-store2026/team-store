@@ -10,7 +10,6 @@ import { removeIcon } from '../utils/svg';
 
 export function renderCartContents(): HTMLElement {
   const cart = getCartFromStorage();
-  const { discount, total } = calculateCartTotals(cart, products);
 
   const section = document.createElement('section');
   section.className = 'cart';
@@ -49,6 +48,45 @@ export function renderCartContents(): HTMLElement {
 
     const list = document.createElement('div');
     list.className = 'cart-list';
+
+    const footer = document.createElement('div');
+    footer.className = 'cart-footer';
+
+    const coupon = document.createElement('div');
+    coupon.className = 'cart-coupon';
+
+    const summary = document.createElement('div');
+    summary.className = 'cart-summary';
+
+    function renderFooter(): void {
+      const cart = getCartFromStorage();
+      const { discount: cartDiscount, total: cartTotal } = calculateCartTotals(
+        cart,
+        products,
+      );
+
+      const promoStatus = cart.promoCode
+        ? `Промоко ${cart.promoCode} применён (−${cart.discount}%)`
+        : 'Промокод не выбран';
+
+      coupon.innerHTML = `
+        <div class="cart-coupon__form">
+          <input class="cart-coupon__input" type="text" placeholder="Промокод:" aria-label="Промокод" />
+          <button type="button" class="cart-coupon__apply" data-action="apply-promo">Применить</button>
+        </div>
+        <p class="cart-coupon__status" data-promo-status>${promoStatus}</p>
+      `;
+
+      summary.innerHTML = `
+        ${cartDiscount > 0
+          ? `<span class="cart-summary__discount">Скидка (${cart.promoCode}): <strong>−${formatPrice(cartDiscount)}</strong></span>`
+          : ''}
+        <span class="cart-summary__total">Итого: <strong>${formatPrice(cartTotal)}</strong></span>
+        ${cart.items.length > 0
+          ? `<button class="btn btn--dark cart-summary__checkout" data-action="checkout">Оформить заказ</button>`
+          : ''}
+      `;
+    }
 
     cart.items.forEach((item) => {
       const product = products.find((p) => p.id === item.productId);
@@ -93,6 +131,7 @@ export function renderCartContents(): HTMLElement {
 
         if (quantity === 0) {
           row.remove();
+          renderFooter();
           return;
         }
 
@@ -105,6 +144,7 @@ export function renderCartContents(): HTMLElement {
         decreaseButton.addEventListener('click', () => {
           updateCartQuantity(productId, quantity - 1);
           renderQty();
+          renderFooter();
         });
 
         const quantityValue = document.createElement('span');
@@ -120,6 +160,7 @@ export function renderCartContents(): HTMLElement {
         increaseButton.addEventListener('click', () => {
           updateCartQuantity(productId, quantity + 1);
           renderQty();
+          renderFooter();
         });
 
         const unit = document.createElement('span');
@@ -148,43 +189,13 @@ export function renderCartContents(): HTMLElement {
       list.append(row);
     });
 
+    renderFooter();
+
     body.append(list);
     section.append(body);
 
-    // — Footer: coupon + totals + checkout (one line) —
-    const footer = document.createElement('div');
-    footer.className = 'cart-footer';
-
-    // coupon
-    const coupon = document.createElement('div');
-    coupon.className = 'cart-coupon';
-    const promoStatus = cart.promoCode
-      ? `Промоко ${cart.promoCode} применён (−${cart.discount}%)`
-      : 'Промокод не выбран';
-
-    coupon.innerHTML = `
-      <div class="cart-coupon__form">
-        <input class="cart-coupon__input" type="text" placeholder="Промокод:" aria-label="Промокод" />
-        <button type="button" class="cart-coupon__apply" data-action="apply-promo">Применить</button>
-      </div>
-      <p class="cart-coupon__status" data-promo-status>${promoStatus}</p>
-    `;
     footer.append(coupon);
-
-    // summary + checkout
-    const summary = document.createElement('div');
-    summary.className = 'cart-summary';
-    summary.innerHTML = `
-      ${discount > 0
-        ? `<span class="cart-summary__discount">Скидка (${cart.promoCode}): <strong>−${formatPrice(discount)}</strong></span>`
-        : ''}
-      <span class="cart-summary__total">Итого: <strong>${formatPrice(total)}</strong></span>
-      ${cart.items.length > 0
-        ? `<button class="btn btn--dark cart-summary__checkout" data-action="checkout">Оформить заказ</button>`
-        : ''}
-    `;
     footer.append(summary);
-
     section.append(footer);
   }
 
