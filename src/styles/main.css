@@ -1151,7 +1151,7 @@ a.team-card__github:hover code {
   background: var(--pink);
 }
 
-/* — Footer: coupon + summary — */
+/* — Footer: promo + summary — */
 
 .cart-footer {
   display: flex;
@@ -1164,23 +1164,23 @@ a.team-card__github:hover code {
   flex-wrap: nowrap;
 }
 
-/* Coupon */
+/* Promo */
 
-.cart-coupon {
+.cart-promo {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
 }
 
-.cart-coupon__form {
+.cart-promo__form {
   display: flex;
   gap: 8px;
   align-items: center;
   flex-shrink: 0;
 }
 
-.cart-coupon__input {
+.cart-promo__input {
   width: 220px;
   padding: 10px 14px;
   border: 1px dashed var(--ink-soft);
@@ -1191,11 +1191,11 @@ a.team-card__github:hover code {
   color: var(--ink);
 }
 
-.cart-coupon__input::placeholder {
+.cart-promo__input::placeholder {
   color: rgba(22, 21, 15, 0.35);
 }
 
-.cart-coupon__apply {
+.cart-promo__apply {
   padding: 10px 22px;
   border: none;
   border-radius: 6px;
@@ -1210,11 +1210,11 @@ a.team-card__github:hover code {
   transition: background 0.15s ease;
 }
 
-.cart-coupon__apply:hover {
+.cart-promo__apply:hover {
   background: var(--olive-deep);
 }
 
-.cart-coupon__status {
+.cart-promo__status {
   margin: 0;
   font-size: 0.82rem;
   color: rgba(22, 21, 15, 0.55);

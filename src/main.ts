@@ -67,7 +67,7 @@ function attachListeners(): void {
   const applyPromoBtn = document.querySelector<HTMLButtonElement>('[data-action="apply-promo"]');
   if (applyPromoBtn) {
     applyPromoBtn.addEventListener('click', () => {
-      const input = document.querySelector<HTMLInputElement>('.cart-coupon__input');
+      const input = document.querySelector<HTMLInputElement>('.cart-promo__input');
       const code = input?.value.trim().toUpperCase() ?? '';
       const cart = getCartFromStorage();
 

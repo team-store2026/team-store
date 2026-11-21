@@ -57,8 +57,8 @@ export function renderCartContents(): HTMLElement {
     const footer = document.createElement('div');
     footer.className = 'cart-footer';
 
-    const coupon = document.createElement('div');
-    coupon.className = 'cart-coupon';
+    const promo = document.createElement('div');
+    promo.className = 'cart-promo';
 
     const summary = document.createElement('div');
     summary.className = 'cart-summary';
@@ -74,12 +74,12 @@ export function renderCartContents(): HTMLElement {
         ? `Промоко ${cart.promoCode} применён (−${cart.discount}%)`
         : 'Промокод не выбран';
 
-      coupon.innerHTML = `
-        <div class="cart-coupon__form">
-          <input class="cart-coupon__input" type="text" placeholder="Промокод:" aria-label="Промокод" />
-          <button type="button" class="cart-coupon__apply" data-action="apply-promo">Применить</button>
+      promo.innerHTML = `
+        <div class="cart-promo__form">
+          <input class="cart-promo__input" type="text" placeholder="Промокод:" aria-label="Промокод" />
+          <button type="button" class="cart-promo__apply" data-action="apply-promo">Применить</button>
         </div>
-        <p class="cart-coupon__status" data-promo-status>${promoStatus}</p>
+        <p class="cart-promo__status" data-promo-status>${promoStatus}</p>
       `;
 
       summary.innerHTML = `
@@ -200,7 +200,7 @@ export function renderCartContents(): HTMLElement {
     body.append(list);
     section.append(body);
 
-    footer.append(coupon);
+    footer.append(promo);
     footer.append(summary);
     section.append(footer);
   }
