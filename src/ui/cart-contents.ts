@@ -42,6 +42,11 @@ export function renderCartContents(): HTMLElement {
     empty.className = 'cart-empty';
     empty.textContent = 'Корзина пуста';
     section.append(empty);
+
+    const summary = document.createElement('div');
+    summary.className = 'cart-summary';
+    summary.innerHTML = `<span class="cart-summary__total">Итого: <strong>${formatPrice(0)}</strong></span>`;
+    section.append(summary);
   } else {
     const body = document.createElement('div');
     body.className = 'cart-body';
