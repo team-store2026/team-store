@@ -26,7 +26,14 @@ export function getCartFromStorage(): CartState {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      if (parsed && Array.isArray(parsed.items) && typeof parsed.discount === 'number') {
+        return {
+          items: parsed.items,
+          promoCode: parsed.promoCode ?? null,
+          discount: parsed.discount,
+        };
+      }
     }
   } catch {
     // ignore parse errors
