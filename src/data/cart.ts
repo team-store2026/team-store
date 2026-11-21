@@ -107,6 +107,29 @@ export function calculateCartTotals(
   return { subtotal, discount, total };
 }
 
+export function addItemToCart(cart: CartState, productId: string): CartState {
+  const item = cart.items.find((i) => i.productId === productId);
+  if (item) {
+    return {
+      ...cart,
+      items: cart.items.map((i) =>
+        i.productId === productId ? { ...i, quantity: i.quantity + 1 } : i,
+      ),
+    };
+  }
+  return {
+    ...cart,
+    items: [...cart.items, { productId, quantity: 1 }],
+  };
+}
+
+export function removeItemFromCart(cart: CartState, productId: string): CartState {
+  return {
+    ...cart,
+    items: cart.items.filter((i) => i.productId !== productId),
+  };
+}
+
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
