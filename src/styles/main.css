@@ -223,37 +223,30 @@ svg {
 
 /* Кнопки */
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 13px 26px;
-  border: var(--line);
-  border-radius: 999px;
+.button {
   font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
+  border: var(--line);
+  border-radius: 999px;
+  color: var(--cream);
+  background: var(--ink);
   cursor: pointer;
   transition:
     transform 0.15s ease,
-    box-shadow 0.15s ease,
     background 0.15s ease;
 }
 
-.btn--dark {
-  background: var(--ink);
-  color: var(--cream);
-  box-shadow: 0 5px 0 rgba(22, 21, 15, 0.18);
+.about__button {
+  padding: 13px 26px;  
 }
 
-.btn--dark:hover {
-  background: #000;
+.button:hover {
+  background: var(--olive-deep);
   transform: translateY(-2px);
-  box-shadow: 0 7px 0 rgba(22, 21, 15, 0.2);
 }
 
 /* Плашки-бейджи */
@@ -978,7 +971,7 @@ a.team-card__github:hover code {
 
 /* Подвал */
 
-.site-footer {
+.footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -993,33 +986,27 @@ a.team-card__github:hover code {
   text-transform: uppercase;
 }
 
-.site-footer__dots {
+.footer__dots {
   color: var(--pink-deep);
   letter-spacing: 0.4em;
 }
 
-.site-footer__rss {
+.footer__rss {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 4px 12px 4px 5px;
-  border: var(--line);
-  border-radius: 999px;
   background: var(--white);
-  text-decoration: none;
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-  transition:
-    background 0.15s ease,
-    transform 0.15s ease;
+  color: var(--ink);
+  font-size: 0.6rem;  
 }
 
-.site-footer__rss:hover {
+.footer__rss:hover {
   background: var(--pink);
   transform: translateY(-2px);
 }
 
-.site-footer__rss img {
+.footer__rss img {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -1170,8 +1157,8 @@ a.team-card__github:hover code {
 }
 
 .cart-promo__input {
-  width: 220px;
-  padding: 10px 14px;
+  width: 120px;
+  padding: 5px 15px;
   border: 1px dashed var(--ink-soft);
   border-radius: 6px;
   background: var(--white);
@@ -1184,23 +1171,21 @@ a.team-card__github:hover code {
   color: rgba(22, 21, 15, 0.35);
 }
 
-.cart-promo__apply {
-  padding: 10px 22px;
-  border: none;
-  border-radius: 6px;
+.cart-promo__button {
+  padding: 5px 12px;
   background: var(--ink);
-  color: var(--cream);
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s ease;
+  font-size: 0.52rem;
+  
 }
 
-.cart-promo__apply:hover {
+.cart-promo__button:hover {
   background: var(--olive-deep);
+  transform: translateY(-2px);
+}
+
+.cart-promo__button:active {
+  transform: translateY(0);
 }
 
 .cart-promo__status {
@@ -1252,11 +1237,10 @@ a.team-card__github:hover code {
   font-weight: 700;
 }
 
-.cart-summary__checkout {
+.cart-summary__button {
   margin: 0;
   padding: 10px 22px;
-  border: none;
-  border-radius: 12px;
+  
   font-size: 0.68rem;
   white-space: nowrap;
 }

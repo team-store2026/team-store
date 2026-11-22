@@ -19,7 +19,7 @@ export function renderHero(page: Page = 'about'): string {
         <h1 class="hero__title">${content.title}</h1>
         <p class="hero__lead">${content.lead}</p>
         <div class="hero__actions">
-          <a class="btn btn--dark" href="#/${content.action.page}"
+          <a class="button about__button" href="#/${content.action.page}"
             data-page="${content.action.page}">${content.action.label}</a>
         </div>
       </div>

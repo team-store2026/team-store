@@ -139,7 +139,7 @@ export function renderCartContents(): HTMLElement {
 
       const applyBtn = document.createElement('button');
       applyBtn.type = 'button';
-      applyBtn.className = 'cart-promo__apply';
+      applyBtn.className = 'button cart-promo__button';
       applyBtn.dataset.action = 'apply-promo';
       applyBtn.textContent = 'Применить';
 
@@ -147,7 +147,7 @@ export function renderCartContents(): HTMLElement {
 
       if (cart.items.length > 0) {
         const checkoutBtn = document.createElement('button');
-        checkoutBtn.className = 'btn btn--dark cart-summary__checkout';
+        checkoutBtn.className = 'button cart-summary__button';
         checkoutBtn.dataset.action = 'checkout';
         checkoutBtn.textContent = 'Оформить заказ';
         form.append(group, checkoutBtn);
