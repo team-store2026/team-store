@@ -30,7 +30,8 @@ export function renderCartContents(): HTMLElement {
 
   const note = document.createElement('p');
   note.className = 'section-head__note';
-  note.textContent = 'Выбери то, что поднимает настроение — и добавь в корзину.';
+  note.textContent =
+    'Выбери то, что поднимает настроение — и добавь в корзину.';
 
   headingContainer.append(eyebrow, title);
   sectionHead.append(headingContainer, note);

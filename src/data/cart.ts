@@ -27,7 +27,11 @@ export function getCartFromStorage(): CartState {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
-      if (parsed && Array.isArray(parsed.items) && typeof parsed.discount === 'number') {
+      if (
+        parsed &&
+        Array.isArray(parsed.items) &&
+        typeof parsed.discount === 'number'
+      ) {
         return {
           items: parsed.items,
           promoCode: parsed.promoCode ?? null,
@@ -130,7 +134,10 @@ export function addItemToCart(cart: CartState, productId: string): CartState {
   };
 }
 
-export function removeItemFromCart(cart: CartState, productId: string): CartState {
+export function removeItemFromCart(
+  cart: CartState,
+  productId: string,
+): CartState {
   return {
     ...cart,
     items: cart.items.filter((i) => i.productId !== productId),
