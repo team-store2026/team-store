@@ -31,7 +31,8 @@ export function showToast(message: string, type: ToastType = 'success'): void {
   closeBtn.textContent = '×';
 
   function dismiss(): void {
-    if (!toast.isConnected || toast.classList.contains('toast--leaving')) return;
+    if (!toast.isConnected || toast.classList.contains('toast--leaving'))
+      return;
     toast.classList.add('toast--leaving');
     toast.addEventListener('animationend', () => toast.remove(), {
       once: true,
