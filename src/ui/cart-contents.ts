@@ -44,7 +44,7 @@ export function renderCartContents(): HTMLElement {
     section.append(empty);
 
     const summary = document.createElement('div');
-    summary.className = 'cart-summary';
+    summary.className = 'cart-summary cart-summary--empty';
     summary.innerHTML = `<span class="cart-summary__total">Итого: <strong>${formatPrice(0)}</strong></span>`;
     section.append(summary);
   } else {
@@ -57,39 +57,57 @@ export function renderCartContents(): HTMLElement {
     const footer = document.createElement('div');
     footer.className = 'cart-footer';
 
-    const promo = document.createElement('div');
-    promo.className = 'cart-promo';
-
     const summary = document.createElement('div');
     summary.className = 'cart-summary';
 
+    const promoRow = document.createElement('div');
+    promoRow.className = 'cart-promo';
+
     function renderFooter(): void {
       const cart = getCartFromStorage();
-      const { discount: cartDiscount, total: cartTotal } = calculateCartTotals(
-        cart,
-        products,
+      const {
+        subtotal: cartSubtotal,
+        discount: cartDiscount,
+        total: cartTotal,
+      } = calculateCartTotals(cart, products);
+
+      const totalQuantity = cart.items.reduce(
+        (sum, item) => sum + item.quantity,
+        0,
       );
 
       const promoStatus = cart.promoCode
         ? `Промоко ${cart.promoCode} применён (−${cart.discount}%)`
         : 'Промокод не выбран';
 
-      promo.innerHTML = `
-        <div class="cart-promo__form">
-          <input class="cart-promo__input" type="text" placeholder="Промокод:" aria-label="Промокод" />
-          <button type="button" class="cart-promo__apply" data-action="apply-promo">Применить</button>
+      summary.innerHTML = `
+        <div class="cart-summary__row">
+          <span class="cart-summary__label">Выбрано товаров: ${totalQuantity} шт.</span>
+          <span class="cart-summary__value">${formatPrice(cartSubtotal)}</span>
         </div>
-        <p class="cart-promo__status" data-promo-status>${promoStatus}</p>
+        ${cartDiscount > 0
+          ? `<div class="cart-summary__row">
+              <span class="cart-summary__label">Скидка по коду ${cart.promoCode} (${cart.discount}%)</span>
+              <span class="cart-summary__value">−${formatPrice(cartDiscount)}</span>
+            </div>`
+          : ''}
+        <div class="cart-summary__row cart-summary__row--total">
+          <span class="cart-summary__label">Итого к оплате</span>
+          <span class="cart-summary__value">${formatPrice(cartTotal)}</span>
+        </div>
       `;
 
-      summary.innerHTML = `
-        ${cartDiscount > 0
-          ? `<span class="cart-summary__discount">Скидка (${cart.promoCode}): <strong>−${formatPrice(cartDiscount)}</strong></span>`
-          : ''}
-        <span class="cart-summary__total">Итого: <strong>${formatPrice(cartTotal)}</strong></span>
-        ${cart.items.length > 0
-          ? `<button class="btn btn--dark cart-summary__checkout" data-action="checkout">Оформить заказ</button>`
-          : ''}
+      promoRow.innerHTML = `
+        <div class="cart-promo__form">
+          <span class="cart-promo__group">
+            <input class="cart-promo__input" type="text" placeholder="Промокод:" aria-label="Промокод" />
+            <button type="button" class="cart-promo__apply" data-action="apply-promo">Применить</button>
+          </span>
+          ${cart.items.length > 0
+            ? `<button class="btn btn--dark cart-summary__checkout" data-action="checkout">Оформить заказ</button>`
+            : ''}
+        </div>
+        <p class="cart-promo__status" data-promo-status>${promoStatus}</p>
       `;
     }
 
@@ -125,12 +143,12 @@ export function renderCartContents(): HTMLElement {
       const totalRow = document.createElement('p');
       totalRow.className = 'cart-row__total';
 
-      // qty stepper (same pattern as product-card__controls)
-      const qty = document.createElement('div');
-      qty.className = 'cart-row__qty';
+      // quantity stepper (same pattern as product-card__controls)
+      const quantityEl = document.createElement('div');
+      quantityEl.className = 'cart-row__controls';
 
-      function renderQty(): void {
-        qty.replaceChildren();
+      function renderQuantity(): void {
+        quantityEl.replaceChildren();
 
         const quantity = getProductQuantity(productId);
 
@@ -149,7 +167,7 @@ export function renderCartContents(): HTMLElement {
         decreaseButton.addEventListener('click', () => {
           if (quantity <= 1) return;
           updateCartQuantity(productId, quantity - 1);
-          renderQty();
+          renderQuantity();
           renderFooter();
         });
 
@@ -165,21 +183,21 @@ export function renderCartContents(): HTMLElement {
 
         increaseButton.addEventListener('click', () => {
           updateCartQuantity(productId, quantity + 1);
-          renderQty();
+          renderQuantity();
           renderFooter();
         });
 
         const unit = document.createElement('span');
-        unit.className = 'qty__unit';
+        unit.className = 'quantity__unit';
         unit.textContent = 'шт.';
 
-        qty.append(decreaseButton, quantityValue, increaseButton, unit);
+        quantityEl.append(decreaseButton, quantityValue, increaseButton, unit);
         totalRow.textContent = formatPrice(productPrice * quantity);
       }
 
-      renderQty();
+      renderQuantity();
 
-      row.append(qty);
+      row.append(quantityEl);
       row.append(totalRow);
 
       // remove
@@ -200,8 +218,8 @@ export function renderCartContents(): HTMLElement {
     body.append(list);
     section.append(body);
 
-    footer.append(promo);
     footer.append(summary);
+    footer.append(promoRow);
     section.append(footer);
   }
 

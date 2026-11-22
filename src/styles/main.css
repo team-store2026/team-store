@@ -630,7 +630,8 @@ svg {
   font-weight: 800;
 }
 
-.product-card__controls {
+.product-card__controls,
+.cart-row__controls {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1063,6 +1064,7 @@ a.team-card__github:hover code {
 .cart-row {
   display: grid;
   grid-template-columns: auto 1fr auto auto auto;
+  padding: 10px 0;
   gap: 20px;
   align-items: center;
   border-bottom: 1px solid rgba(22, 21, 15, 0.66);
@@ -1107,15 +1109,9 @@ a.team-card__github:hover code {
   font-weight: 800;
 }
 
-/* — Qty stepper — */
+/* — Quantity stepper — */
 
-.cart-row__qty {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.qty__unit {
+.quantity__unit {
   font-size: 0.78rem;
   color: rgba(22, 21, 15, 0.55);
   font-weight: 600;
@@ -1151,33 +1147,26 @@ a.team-card__github:hover code {
   background: var(--pink);
 }
 
-/* — Footer: promo + summary — */
-
-.cart-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-  padding: 24px 32px 32px;
-  
-  border-top: 1px solid #e8e6dc;
-  flex-wrap: nowrap;
-}
-
 /* Promo */
 
 .cart-promo {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
 }
 
 .cart-promo__form {
   display: flex;
   gap: 8px;
   align-items: center;
-  flex-shrink: 0;
+  justify-content: space-between;
+}
+
+.cart-promo__group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .cart-promo__input {
@@ -1218,68 +1207,74 @@ a.team-card__github:hover code {
   margin: 0;
   font-size: 0.82rem;
   color: rgba(22, 21, 15, 0.55);
-  white-space: nowrap;
 }
 
-/* Summary (inline, one line) */
+/* — Footer: summary — */
+
+.cart-footer {
+  margin-top: 24px;
+  padding: 24px 32px 32px;
+  border-radius: 18px;  
+}
 
 .cart-summary {
   display: flex;
-  align-items: center;
-  justify-content: end;
-  gap: 16px;
-  flex-shrink: 0;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
 }
 
-.cart-summary__discount,
-.cart-summary__total {
-  margin: 0;
+.cart-summary__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 0.92rem;
+}
+
+.cart-summary__label {
+  font-weight: 600;
+}
+
+.cart-summary__value {
+  font-weight: 800;
   white-space: nowrap;
 }
 
-.cart-summary__discount {
-  font-size: 0.88rem;
+.cart-summary__row--total {
+  margin-top: 10px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(22, 21, 15, 0.22);
+  font-size: 1.05rem;
+}
+
+.cart-summary__row--total .cart-summary__label {
+  font-weight: 700;
+}
+
+.cart-summary__checkout {
+  margin: 0;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+/* Summary for empty cart */
+
+.cart-summary--empty {
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .cart-summary__total {
   font-size: 1.05rem;
   font-weight: 800;
-}
-
-.cart-summary__checkout {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 13px 26px;
-  width: auto;
-  margin: 0 0 0 32px;
   white-space: nowrap;
-  border: var(--line);
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--cream);
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    background 0.15s ease;
-}
-
-.cart-summary__checkout:hover {
-  background: #000;
-  transform: translateY(-2px);
-  box-shadow: 0 7px 0 rgba(22, 21, 15, 0.2);
-}
-
-.cart-summary__checkout:active {
-  transform: translateY(0);
 }
 
 /* — Responsive — */
@@ -1290,7 +1285,7 @@ a.team-card__github:hover code {
     gap: 14px;
   }
 
-  .cart-row__qty,
+  .cart-row__controls,
   .cart-row__total {
     grid-column: 2;
   }
@@ -1302,9 +1297,7 @@ a.team-card__github:hover code {
   }
 
   .cart-footer {
-    flex-wrap: wrap;
     padding: 20px;
-    gap: 20px;
   }
 }
 
@@ -1321,12 +1314,20 @@ a.team-card__github:hover code {
     justify-self: end;
   }
 
-  .cart-row__qty,
+  .cart-row__controls,
   .cart-row__total {
     grid-column: 2;
   }
 
   .cart-body {
     padding: 16px;
+  }
+
+  .cart-footer {
+    padding: 18px 16px 20px;
+  }
+
+  .cart-summary__row {
+    gap: 12px;
   }
 }
