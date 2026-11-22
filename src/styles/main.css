@@ -1265,19 +1265,54 @@ a.team-card__github:hover code {
 
 @media (max-width: 820px) {
   .cart-row {
-    grid-template-columns: 64px 1fr auto;
-    gap: 14px;
+    grid-template-columns: 194px 1fr auto;
+    grid-template-areas:
+      "img info remove"
+      "img ctrl total";
+    gap: 5px;
   }
 
-  .cart-row__controls,
+  .cart-row__image {
+    grid-area: img;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .cart-row__info {
+    grid-area: info;
+  }
+
+  .cart-row__controls {
+    grid-area: ctrl;
+    gap: 6px;
+    margin-top: 4px;
+    justify-content: flex-start;
+  }
+
   .cart-row__total {
-    grid-column: 2;
+    grid-area: total;
+    align-self: end;
   }
 
   .cart-row__remove {
-    grid-column: 3;
-    grid-row: 1;
+    grid-area: remove;
+    justify-self: end;
     align-self: start;
+  }
+
+  .cart-row__controls .product-card__quantity-button {
+    width: 22px;
+    height: 22px;
+    font-size: 0.72rem;
+  }
+
+  .cart-row__controls .product-card__quantity {
+    font-size: 0.78rem;
+  }
+
+  .cart-row__controls .quantity__unit {
+    font-size: 0.68rem;
   }
 
   .cart-footer {
@@ -1285,22 +1320,26 @@ a.team-card__github:hover code {
   }
 }
 
+@media (max-width: 800px) {
+  .cart-row__controls .product-card__quantity-button {
+    border-width: 1px;
+  }
+}
+
 @media (max-width: 600px) {
   .cart-row {
-    grid-template-columns: 56px 1fr;
+    grid-template-columns: 156px 1fr auto;
+    grid-template-areas:
+      "img info remove"
+      "img ctrl ctrl"
+      "img total total";
     gap: 12px;
     padding: 14px 0;
   }
 
   .cart-row__remove {
-    grid-column: 2;
-    grid-row: 1;
     justify-self: end;
-  }
-
-  .cart-row__controls,
-  .cart-row__total {
-    grid-column: 2;
+    align-self: start;
   }
 
   .cart-body {
