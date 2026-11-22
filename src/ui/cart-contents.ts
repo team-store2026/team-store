@@ -45,7 +45,10 @@ export function renderCartContents(): HTMLElement {
 
     const summary = document.createElement('div');
     summary.className = 'cart-summary cart-summary--empty';
-    summary.innerHTML = `<span class="cart-summary__total">Итого: <strong>${formatPrice(0)}</strong></span>`;
+    const totalSpan = document.createElement('span');
+    totalSpan.className = 'cart-summary__total';
+    totalSpan.innerHTML = `Итого: <strong>${formatPrice(0)}</strong>`;
+    summary.append(totalSpan);
     section.append(summary);
   } else {
     const body = document.createElement('div');
@@ -80,35 +83,84 @@ export function renderCartContents(): HTMLElement {
         ? `Промоко ${cart.promoCode} применён (−${cart.discount}%)`
         : 'Промокод не выбран';
 
-      summary.innerHTML = `
-        <div class="cart-summary__row">
-          <span class="cart-summary__label">Выбрано товаров: ${totalQuantity} шт.</span>
-          <span class="cart-summary__value">${formatPrice(cartSubtotal)}</span>
-        </div>
-        ${cartDiscount > 0
-          ? `<div class="cart-summary__row">
-              <span class="cart-summary__label">Скидка по коду ${cart.promoCode} (${cart.discount}%)</span>
-              <span class="cart-summary__value">−${formatPrice(cartDiscount)}</span>
-            </div>`
-          : ''}
-        <div class="cart-summary__row cart-summary__row--total">
-          <span class="cart-summary__label">Итого к оплате</span>
-          <span class="cart-summary__value">${formatPrice(cartTotal)}</span>
-        </div>
-      `;
+      summary.replaceChildren();
 
-      promoRow.innerHTML = `
-        <div class="cart-promo__form">
-          <span class="cart-promo__group">
-            <input class="cart-promo__input" type="text" placeholder="Промокод:" aria-label="Промокод" />
-            <button type="button" class="cart-promo__apply" data-action="apply-promo">Применить</button>
-          </span>
-          ${cart.items.length > 0
-            ? `<button class="btn btn--dark cart-summary__checkout" data-action="checkout">Оформить заказ</button>`
-            : ''}
-        </div>
-        <p class="cart-promo__status" data-promo-status>${promoStatus}</p>
-      `;
+      // Row: quantity + subtotal
+      const row1 = document.createElement('div');
+      row1.className = 'cart-summary__row';
+      const label1 = document.createElement('span');
+      label1.className = 'cart-summary__label';
+      label1.textContent = `Выбрано товаров: ${totalQuantity} шт.`;
+      const value1 = document.createElement('span');
+      value1.className = 'cart-summary__value';
+      value1.textContent = formatPrice(cartSubtotal);
+      row1.append(label1, value1);
+      summary.append(row1);
+
+      // Row: discount (if any)
+      if (cartDiscount > 0) {
+        const rowDiscount = document.createElement('div');
+        rowDiscount.className = 'cart-summary__row';
+        const labelDiscount = document.createElement('span');
+        labelDiscount.className = 'cart-summary__label';
+        labelDiscount.textContent = `Скидка по коду ${cart.promoCode} (${cart.discount}%)`;
+        const valueDiscount = document.createElement('span');
+        valueDiscount.className = 'cart-summary__value';
+        valueDiscount.textContent = `−${formatPrice(cartDiscount)}`;
+        rowDiscount.append(labelDiscount, valueDiscount);
+        summary.append(rowDiscount);
+      }
+
+      // Row: total
+      const rowTotal = document.createElement('div');
+      rowTotal.className = 'cart-summary__row cart-summary__row--total';
+      const labelTotal = document.createElement('span');
+      labelTotal.className = 'cart-summary__label';
+      labelTotal.textContent = 'Итого к оплате';
+      const valueTotal = document.createElement('span');
+      valueTotal.className = 'cart-summary__value';
+      valueTotal.textContent = formatPrice(cartTotal);
+      rowTotal.append(labelTotal, valueTotal);
+      summary.append(rowTotal);
+
+      promoRow.replaceChildren();
+
+      const form = document.createElement('div');
+      form.className = 'cart-promo__form';
+
+      const group = document.createElement('span');
+      group.className = 'cart-promo__group';
+
+      const input = document.createElement('input');
+      input.className = 'cart-promo__input';
+      input.type = 'text';
+      input.placeholder = 'Промокод:';
+      input.setAttribute('aria-label', 'Промокод');
+
+      const applyBtn = document.createElement('button');
+      applyBtn.type = 'button';
+      applyBtn.className = 'cart-promo__apply';
+      applyBtn.dataset.action = 'apply-promo';
+      applyBtn.textContent = 'Применить';
+
+      group.append(input, applyBtn);
+
+      if (cart.items.length > 0) {
+        const checkoutBtn = document.createElement('button');
+        checkoutBtn.className = 'btn btn--dark cart-summary__checkout';
+        checkoutBtn.dataset.action = 'checkout';
+        checkoutBtn.textContent = 'Оформить заказ';
+        form.append(group, checkoutBtn);
+      } else {
+        form.append(group);
+      }
+
+      const status = document.createElement('p');
+      status.className = 'cart-promo__status';
+      status.dataset.promoStatus = '';
+      status.textContent = promoStatus;
+
+      promoRow.append(form, status);
     }
 
     cart.items.forEach((item) => {
@@ -131,12 +183,24 @@ export function renderCartContents(): HTMLElement {
       // info
       const info = document.createElement('div');
       info.className = 'cart-row__info';
-      info.innerHTML = `
-        <h3 class="cart-row__name">${product.name}</h3>
-        <p class="cart-row__meta">Артикул: <span>${productId}</span></p>
-        <p class="cart-row__meta">Наличие: <span>в наличии</span></p>
-        <p class="cart-row__price">${formatPrice(productPrice)}</p>
-      `;
+
+      const name = document.createElement('h3');
+      name.className = 'cart-row__name';
+      name.textContent = product.name;
+
+      const metaCategory = document.createElement('p');
+      metaCategory.className = 'cart-row__meta';
+      metaCategory.innerHTML = `Категория: <span>${product.category}</span>`;
+
+      const metaStock = document.createElement('p');
+      metaStock.className = 'cart-row__meta';
+      metaStock.textContent = 'Наличие: в наличии';
+
+      const price = document.createElement('p');
+      price.className = 'cart-row__price';
+      price.textContent = formatPrice(productPrice);
+
+      info.append(name, metaCategory, metaStock, price);
       row.append(info);
 
       // total
