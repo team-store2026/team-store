@@ -79,8 +79,7 @@ export function renderProducts(): HTMLElement {
 
     let filteredProducts = products.filter((product) => {
       return (
-        selectedCategory === 'all' ||
-        product.category === selectedCategory
+        selectedCategory === 'all' || product.category === selectedCategory
       );
     });
 
