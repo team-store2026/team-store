@@ -1,5 +1,9 @@
 import { products } from '../data/products';
 import { createProductCard } from './product-card';
+import {
+  getVisibleProducts,
+  type SortOrder,
+} from '../utils/get-visible-products';
 
 export function renderProducts(): HTMLElement {
   const productsSection = document.createElement('section');
@@ -26,14 +30,72 @@ export function renderProducts(): HTMLElement {
   headingContainer.append(eyebrow, title);
   sectionHead.append(headingContainer, note);
 
+  const controls = document.createElement('div');
+  controls.className = 'products-controls';
+
+  const categorySelect = document.createElement('select');
+  categorySelect.className = 'products-controls__select';
+  categorySelect.setAttribute('aria-label', 'Фильтр по категории');
+
+  const allCategoriesOption = document.createElement('option');
+  allCategoriesOption.value = 'all';
+  allCategoriesOption.textContent = 'Все категории';
+  categorySelect.append(allCategoriesOption);
+
+  const categories = [...new Set(products.map((product) => product.category))];
+
+  categories.sort((a, b) => a.localeCompare(b, 'ru'));
+
+  categories.forEach((category) => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    categorySelect.append(option);
+  });
+
+  const sortSelect = document.createElement('select');
+  sortSelect.className = 'products-controls__select';
+  sortSelect.setAttribute('aria-label', 'Сортировка по цене');
+
+  const sortOptions = [
+    { value: 'default', label: 'По умолчанию' },
+    { value: 'asc', label: 'Сначала дешевле' },
+    { value: 'desc', label: 'Сначала дороже' },
+  ];
+
+  sortOptions.forEach(({ value, label }) => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = label;
+    sortSelect.append(option);
+  });
+
+  controls.append(categorySelect, sortSelect);
+
   const grid = document.createElement('div');
   grid.className = 'products-grid';
 
-  products.forEach((product) => {
-    grid.append(createProductCard(product));
-  });
+  function updateProducts(): void {
+    const selectedCategory = categorySelect.value;
+    const sortOrder = sortSelect.value as SortOrder;
 
-  productsSection.append(sectionHead, grid);
+    const visibleProducts = getVisibleProducts(
+      products,
+      selectedCategory,
+      sortOrder,
+    );
+
+    grid.replaceChildren(
+      ...visibleProducts.map((product) => createProductCard(product)),
+    );
+  }
+
+  categorySelect.addEventListener('change', updateProducts);
+  sortSelect.addEventListener('change', updateProducts);
+
+  updateProducts();
+
+  productsSection.append(sectionHead, controls, grid);
 
   return productsSection;
 }
