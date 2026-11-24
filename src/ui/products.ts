@@ -1,7 +1,9 @@
 import { products } from '../data/products';
 import { createProductCard } from './product-card';
-
-type SortOrder = 'default' | 'asc' | 'desc';
+import {
+  getVisibleProducts,
+  type SortOrder,
+} from '../utils/get-visible-products';
 
 export function renderProducts(): HTMLElement {
   const productsSection = document.createElement('section');
@@ -77,26 +79,14 @@ export function renderProducts(): HTMLElement {
     const selectedCategory = categorySelect.value;
     const sortOrder = sortSelect.value as SortOrder;
 
-    let filteredProducts = products.filter((product) => {
-      return (
-        selectedCategory === 'all' || product.category === selectedCategory
-      );
-    });
-
-    if (sortOrder === 'asc') {
-      filteredProducts = [...filteredProducts].sort(
-        (a, b) => a.price - b.price,
-      );
-    }
-
-    if (sortOrder === 'desc') {
-      filteredProducts = [...filteredProducts].sort(
-        (a, b) => b.price - a.price,
-      );
-    }
+    const visibleProducts = getVisibleProducts(
+      products,
+      selectedCategory,
+      sortOrder,
+    );
 
     grid.replaceChildren(
-      ...filteredProducts.map((product) => createProductCard(product)),
+      ...visibleProducts.map((product) => createProductCard(product)),
     );
   }
 
