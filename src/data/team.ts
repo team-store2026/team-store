@@ -16,7 +16,7 @@ export const team: TeamMember[] = [
     githubUrl: 'https://github.com/KateKurakina',
     role: 'Екатерина Куракина',
     contribution:
-      'Настройка проекта, каталог, фильтры и сортировка товаров, корзина, промокод и сохранение покупок в localStorage.',
+      'Настройка проекта, каталог, карточки товаров, фильтрация по категориям и сортировка по цене.',
     art: 'pink',
   },
   {
@@ -25,7 +25,8 @@ export const team: TeamMember[] = [
     github: 'Faratora',
     githubUrl: 'https://github.com/Faratora',
     role: 'Светлана Савина',
-    contribution: 'Настройка проекта, страница "О нас", ',
+    contribution:
+      'Настройка проекта, страница "О нас", корзина, промокод и сохранение покупок в localStorage. ',
     art: 'olive',
   },
 ];
