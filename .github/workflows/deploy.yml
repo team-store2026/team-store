@@ -2,7 +2,7 @@ name: deploy
 
 on:
   push:
-    branches: [main]
+    branches: [submit/faratora]
   workflow_dispatch:
 
 permissions:
