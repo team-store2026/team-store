@@ -32,7 +32,7 @@
 
 ## Ссылки
 
-- **Деплой**: https://team-store.vercel.app (пример)
+- **Деплой**: (https://team-store2026.github.io/team-store/)
 - **Репозиторий**: https://github.com/team-store2026/team-store
 - **Доска задач**: [Доска задач](https://github.com/users/Faratora/projects/5/views/1)
 - **Интервью (кандидат)**: https://youtu.be/example-interview (пример)
