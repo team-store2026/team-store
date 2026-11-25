@@ -1,10 +1,6 @@
 # Dependencies
 node_modules/
 
-# Build output
-dist/
-build/
-
 # Logs
 *.local
 *.log
@@ -12,6 +8,8 @@ build/
 # Environment
 .env
 
+# Build
+dist/
 
 # Editor / OS
 .vscode/
