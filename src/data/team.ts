@@ -25,7 +25,8 @@ export const team: TeamMember[] = [
     github: 'Faratora',
     githubUrl: 'https://github.com/Faratora',
     role: 'Светлана Савина',
-    contribution: 'Настройка проекта, страница "О нас", Страница корзины, промокод и сохранение корзины в localStorage.  ',
+    contribution:
+      'Настройка проекта, страница "О нас", Страница корзины, промокод и сохранение корзины в localStorage.  ',
     art: 'olive',
   },
 ];
